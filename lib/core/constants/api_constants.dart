@@ -2,8 +2,8 @@ class ApiConstants {
   ApiConstants._();
 
   static const String appName = 'AppointEase';
-  // static const String baseUrl = 'http://10.0.2.2:5000/api'; // Android emulator
-  static const String baseUrl = 'http://localhost:5000/api'; // Web / iOS simulator
+  static const String baseUrl = 'http://10.0.2.2:5000/api'; // Android emulator
+  // static const String baseUrl = 'http://localhost:5000/api'; // Web / iOS simulator
 
   // Auth
   static const String register = '/auth/register';

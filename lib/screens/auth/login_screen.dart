@@ -1,10 +1,14 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
+import '../../widgets/booqly_logo.dart';
+import '../../widgets/glass_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,16 +17,43 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   bool _obscure = true;
 
+  late final AnimationController _entryCtrl;
+  late final Animation<double> _cardFade;
+  late final Animation<Offset> _cardSlide;
+
+  @override
+  void initState() {
+    super.initState();
+    _entryCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    )..forward();
+
+    _cardFade = CurvedAnimation(
+      parent: _entryCtrl,
+      curve: const Interval(0.3, 1.0, curve: Curves.easeOut),
+    );
+    _cardSlide = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _entryCtrl,
+      curve: const Interval(0.3, 1.0, curve: Curves.easeOutCubic),
+    ));
+  }
+
   @override
   void dispose() {
     _emailCtrl.dispose();
     _passCtrl.dispose();
+    _entryCtrl.dispose();
     super.dispose();
   }
 
@@ -49,82 +80,230 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final loading = context.watch<AuthProvider>().loading;
+    final size = MediaQuery.sizeOf(context);
+
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 48),
-              Text(
-                'Bon retour !',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+      body: Stack(
+        children: [
+          // ── Fond dégradé violet ─────────────────────────────────────────
+          Container(
+            width: size.width,
+            height: size.height,
+            decoration: const BoxDecoration(
+              gradient: AppColors.splashGradient,
+            ),
+          ),
+
+          // ── Cercle déco haut-droit ──────────────────────────────────────
+          Positioned(
+            top: -80,
+            right: -80,
+            child: Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryGlow.withValues(alpha: 0.18),
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Connectez-vous à votre compte',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+            ),
+          ),
+
+          // ── Cercle déco bas-gauche ──────────────────────────────────────
+          Positioned(
+            bottom: -60,
+            left: -60,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.accent.withValues(alpha: 0.14),
               ),
-              const SizedBox(height: 40),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _emailCtrl,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        prefixIcon: Icon(Icons.email_outlined),
-                      ),
-                      validator: AppValidators.email,
+            ),
+          ),
+
+          // ── Contenu principal ───────────────────────────────────────────
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 48),
+
+                  // Logo animé
+                  const BooqlyLogo(size: 90),
+                  const SizedBox(height: 16),
+
+                  // Nom de l'app
+                  Text(
+                    'Booqly',
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
                     ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _passCtrl,
-                      obscureText: _obscure,
-                      decoration: InputDecoration(
-                        labelText: 'Mot de passe',
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          icon: Icon(_obscure
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined),
-                          onPressed: () => setState(() => _obscure = !_obscure),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Vos rendez-vous, simplifiés',
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      color: Colors.white.withValues(alpha: 0.65),
+                    ),
+                  ),
+
+                  const SizedBox(height: 48),
+
+                  // ── Carte glassmorphism ─────────────────────────────────
+                  FadeTransition(
+                    opacity: _cardFade,
+                    child: SlideTransition(
+                      position: _cardSlide,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.10),
+                              borderRadius: BorderRadius.circular(28),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.18),
+                                width: 1.5,
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(28),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Connexion',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Bienvenue ! Connectez-vous pour continuer.',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 13,
+                                      color: Colors.white.withValues(alpha: 0.65),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 28),
+
+                                  // Email
+                                  GlassField(
+                                    controller: _emailCtrl,
+                                    hint: 'Email',
+                                    icon: Icons.email_outlined,
+                                    keyboardType: TextInputType.emailAddress,
+                                    validator: AppValidators.email,
+                                  ),
+                                  const SizedBox(height: 16),
+
+                                  // Mot de passe
+                                  GlassField(
+                                    controller: _passCtrl,
+                                    hint: 'Mot de passe',
+                                    icon: Icons.lock_outline,
+                                    obscure: _obscure,
+                                    validator: AppValidators.password,
+                                    suffix: IconButton(
+                                      icon: Icon(
+                                        _obscure
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined,
+                                        color: Colors.white60,
+                                        size: 20,
+                                      ),
+                                      onPressed: () =>
+                                          setState(() => _obscure = !_obscure),
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 32),
+
+                                  // Bouton connexion
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 52,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        foregroundColor: AppColors.primaryDark,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(14),
+                                        ),
+                                        elevation: 0,
+                                      ),
+                                      onPressed: loading ? null : _submit,
+                                      child: loading
+                                          ? SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: AppColors.primary,
+                                              ),
+                                            )
+                                          : Text(
+                                              'Se connecter',
+                                              style: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      validator: AppValidators.password,
                     ),
-                    const SizedBox(height: 32),
-                    ElevatedButton(
-                      onPressed: loading ? null : _submit,
-                      child: loading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Lien inscription
+                  FadeTransition(
+                    opacity: _cardFade,
+                    child: TextButton(
+                      onPressed: () => context.push('/register'),
+                      child: RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.white.withValues(alpha: 0.70),
+                          ),
+                          children: [
+                            const TextSpan(text: "Pas encore de compte ? "),
+                            TextSpan(
+                              text: "S'inscrire",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
-                            )
-                          : const Text('Se connecter'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () => context.push('/register'),
-                      child: const Text("Pas encore de compte ? S'inscrire"),
-                    ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
