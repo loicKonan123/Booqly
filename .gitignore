@@ -1,0 +1,26 @@
+﻿# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+pubspec.lock
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.claude/
+
+# .NET
+**/bin/
+**/obj/
+*.user
+.vs/
+
+# Secrets
+**/appsettings.Development.json
+**/appsettings.Production.json
+
+# OS
+.DS_Store
+Thumbs.db
