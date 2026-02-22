@@ -227,7 +227,30 @@ class _LoginScreenState extends State<LoginScreen>
                                     ),
                                   ),
 
-                                  const SizedBox(height: 32),
+                                  // Mot de passe oublié
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton(
+                                      onPressed: () =>
+                                          context.push('/forgot-password'),
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
+                                        minimumSize: Size.zero,
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                      child: Text(
+                                        'Mot de passe oublié ?',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          color: Colors.white
+                                              .withValues(alpha: 0.75),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 24),
 
                                   // Bouton connexion
                                   SizedBox(

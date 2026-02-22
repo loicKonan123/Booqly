@@ -37,6 +37,7 @@ public static class DependencyInjection
         // Services
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ISmsService, TwilioSmsService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         // Hangfire
         services.AddHangfire(cfg => cfg

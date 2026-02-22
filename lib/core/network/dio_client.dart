@@ -83,7 +83,10 @@ class DioClient {
       case DioExceptionType.badResponse:
         final status = e.response?.statusCode;
         if (status == 401) return const UnauthorizedException();
-        final message = e.response?.data?['message'] as String? ?? 'Erreur serveur';
+        final rawData = e.response?.data;
+        final message = rawData is Map
+            ? rawData['message'] as String? ?? 'Erreur serveur'
+            : rawData?.toString() ?? 'Erreur serveur';
         return ServerException(message: message, statusCode: status);
       default:
         return ServerException(message: e.message ?? 'Erreur inconnue');

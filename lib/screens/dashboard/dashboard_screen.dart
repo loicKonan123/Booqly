@@ -28,13 +28,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final auth = context.watch<AuthProvider>();
     final appointments = context.watch<AppointmentProvider>();
     final upcoming = appointments.upcoming;
-    final now = DateTime.now();
-    final todayRdv = upcoming
-        .where((a) =>
-            a.startTime.year == now.year &&
-            a.startTime.month == now.month &&
-            a.startTime.day == now.day)
-        .toList();
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -48,7 +41,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SliverToBoxAdapter(
               child: _DashboardHeader(
                 firstName: auth.user?.firstName ?? '',
-                todayCount: todayRdv.length,
                 upcomingCount: upcoming.length,
                 totalCount: appointments.all.length,
               ),
@@ -60,29 +52,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Center(child: CircularProgressIndicator()),
               )
             else ...[
-              // Aujourd'hui
-              if (todayRdv.isNotEmpty) ...[
-                _SliverSectionTitle(title: "Aujourd'hui"),
-                SliverPadding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (ctx, i) => _AppointmentCard(
-                        appointment: todayRdv[i],
-                        isToday: true,
-                      ),
-                      childCount: todayRdv.length,
-                    ),
-                  ),
-                ),
-              ],
-
               // À venir
               _SliverSectionTitle(title: 'À venir'),
               SliverPadding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: upcoming.isEmpty
                     ? SliverToBoxAdapter(child: _EmptyState())
                     : SliverList(
@@ -91,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             appointment: upcoming[i],
                             isToday: false,
                           ),
-                          childCount: upcoming.take(6).length,
+                          childCount: upcoming.length,
                         ),
                       ),
               ),
@@ -109,13 +82,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 class _DashboardHeader extends StatelessWidget {
   final String firstName;
-  final int todayCount;
   final int upcomingCount;
   final int totalCount;
 
   const _DashboardHeader({
     required this.firstName,
-    required this.todayCount,
     required this.upcomingCount,
     required this.totalCount,
   });
@@ -199,15 +170,6 @@ class _DashboardHeader extends StatelessWidget {
               // Stat cards
               Row(
                 children: [
-                  Expanded(
-                    child: _StatCard(
-                      label: "Aujourd'hui",
-                      value: '$todayCount',
-                      icon: Icons.today_rounded,
-                      isDark: isDark,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
                   Expanded(
                     child: _StatCard(
                       label: 'À venir',

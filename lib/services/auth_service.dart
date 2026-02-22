@@ -39,6 +39,10 @@ class AuthService {
     return data as Map<String, dynamic>;
   }
 
+  Future<void> forgotPassword(String email) async {
+    await _client.post(ApiConstants.forgotPassword, data: {'email': email});
+  }
+
   Future<void> logout() async {
     try {
       await _client.post(ApiConstants.logout);

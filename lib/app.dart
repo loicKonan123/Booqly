@@ -10,6 +10,7 @@ import 'providers/appointment_provider.dart';
 import 'providers/professional_provider.dart';
 import 'providers/profile_provider.dart';
 import 'providers/theme_provider.dart';
+import 'screens/auth/forgot_password_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/role_select_screen.dart';
@@ -77,7 +78,8 @@ class _AppointEaseAppState extends State<AppointEaseApp> {
         final loc = state.matchedLocation;
         final isOnAuth = loc == '/login' ||
             loc == '/register' ||
-            loc == '/role-select';
+            loc == '/role-select' ||
+            loc == '/forgot-password';
 
         if (loc == '/') {
           return isLoggedIn
@@ -100,6 +102,7 @@ class _AppointEaseAppState extends State<AppointEaseApp> {
 
         // Auth
         GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
+        GoRoute(path: '/forgot-password', builder: (_, __) => const ForgotPasswordScreen()),
         GoRoute(path: '/register', builder: (_, __) => const RegisterScreen()),
         GoRoute(
             path: '/role-select', builder: (_, __) => const RoleSelectScreen()),

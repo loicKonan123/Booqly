@@ -84,27 +84,48 @@ class _ProfessionalDetailScreenState
                 const SizedBox(height: 12),
                 ...provider.services.map((s) => Card(
                       margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        title: Text(s.name),
-                        subtitle: Text(s.formattedDuration),
-                        trailing: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: Row(
                           children: [
-                            Text(s.formattedPrice,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primary)),
-                            ElevatedButton(
-                              onPressed: () => context.push(
-                                '/booking/${pro.id}/slots?serviceId=${s.id}',
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(s.name,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600)),
+                                  const SizedBox(height: 2),
+                                  Text(s.formattedDuration,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color: Colors.grey[600])),
+                                ],
                               ),
-                              style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 4),
-                                  minimumSize: Size.zero),
-                              child: const Text('Réserver',
-                                  style: TextStyle(fontSize: 12)),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(s.formattedPrice,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.primary)),
+                                const SizedBox(height: 6),
+                                ElevatedButton(
+                                  onPressed: () => context.push(
+                                    '/booking/${pro.id}/slots?serviceId=${s.id}',
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 14, vertical: 6),
+                                      minimumSize: Size.zero,
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap),
+                                  child: const Text('Réserver',
+                                      style: TextStyle(fontSize: 12)),
+                                ),
+                              ],
                             ),
                           ],
                         ),

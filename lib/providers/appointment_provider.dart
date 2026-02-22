@@ -101,18 +101,22 @@ class AppointmentProvider extends ChangeNotifier {
       );
       _appointments.insert(0, appointment);
 
-      // Local notification
-      await _notifications.showAppointmentConfirmed(
-        clientName: appointment.clientName,
-        dateTime: appointment.startTime,
-        serviceName: appointment.service.name,
-      );
-      await _notifications.scheduleReminder(
-        id: appointment.id.hashCode,
-        clientName: appointment.clientName,
-        appointmentTime: appointment.startTime,
-        serviceName: appointment.service.name,
-      );
+      // Local notification — erreur ignorée pour ne pas bloquer le succès
+      try {
+        await _notifications.showAppointmentConfirmed(
+          clientName: appointment.clientName,
+          dateTime: appointment.startTime,
+          serviceName: appointment.service.name,
+        );
+        await _notifications.scheduleReminder(
+          id: appointment.id.hashCode,
+          clientName: appointment.clientName,
+          appointmentTime: appointment.startTime,
+          serviceName: appointment.service.name,
+        );
+      } catch (_) {
+        // notification non critique
+      }
 
       _error = null;
       notifyListeners();
