@@ -16,6 +16,14 @@ Nom	Thomas Dupont
 Rôle	Client
 
 
+Champ	Valeur
+Email	admin@gmail.com
+Mot de passe	Admin123!
+Prénom	Admin
+Nom	Client
+Rôle	client
+
+
 1. [Lancer l'application](#1-lancer-lapplication)
 2. [Accéder à la base de données](#2-accéder-à-la-base-de-données)
 3. [Explorer la DB via SQL Server Object Explorer](#3-explorer-la-db-via-sql-server-object-explorer)

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/date_utils.dart';
 import '../../models/appointment.dart';
 import '../../providers/appointment_provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
 
 class AppointmentsScreen extends StatefulWidget {
@@ -25,7 +26,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
     _tabs = TabController(length: 2, vsync: this);
     // Fix: évite setState pendant le build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) context.read<AppointmentProvider>().loadMyAppointments();
+      if (mounted) {
+        final isPro = context.read<AuthProvider>().isProfessional;
+        context.read<AppointmentProvider>().loadMyAppointments(isProfessional: isPro);
+      }
     });
   }
 

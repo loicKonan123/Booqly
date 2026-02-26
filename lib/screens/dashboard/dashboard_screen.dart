@@ -19,7 +19,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) context.read<AppointmentProvider>().loadMyAppointments();
+      if (mounted) {
+        final isPro = context.read<AuthProvider>().isProfessional;
+        context.read<AppointmentProvider>().loadMyAppointments(isProfessional: isPro);
+      }
     });
   }
 
@@ -33,8 +36,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: RefreshIndicator(
         color: AppColors.primary,
-        onRefresh: () =>
-            context.read<AppointmentProvider>().loadMyAppointments(),
+        onRefresh: () {
+          final isPro = context.read<AuthProvider>().isProfessional;
+          return context.read<AppointmentProvider>().loadMyAppointments(isProfessional: isPro);
+        },
         child: CustomScrollView(
           slivers: [
             // ── Header gradient ─────────────────────────────────────────────

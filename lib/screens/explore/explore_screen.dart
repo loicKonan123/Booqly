@@ -71,14 +71,15 @@ class _ExploreScreenState extends State<ExploreScreen> {
           // ── Corps ────────────────────────────────────────────────────────
           if (provider.loading)
             const SliverFillRemaining(
+              hasScrollBody: false,
               child: Center(child: CircularProgressIndicator()),
             )
           else if (provider.error != null)
-            SliverFillRemaining(
+            SliverToBoxAdapter(
               child: _ErrorState(message: provider.error!),
             )
           else if (provider.professionals.isEmpty)
-            const SliverFillRemaining(
+            const SliverToBoxAdapter(
               child: _EmptyState(),
             )
           else

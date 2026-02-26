@@ -17,6 +17,12 @@ class NotificationService {
     await _plugin.initialize(
       const InitializationSettings(android: android, iOS: ios),
     );
+
+    // Android 13+ — demander la permission POST_NOTIFICATIONS au runtime
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
   }
 
   Future<void> showAppointmentConfirmed({
@@ -50,6 +56,19 @@ class NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> showNewBookingReceived({
+    required String clientName,
+    required DateTime dateTime,
+    required String serviceName,
+  }) async {
+    await _plugin.show(
+      (dateTime.hashCode ^ clientName.hashCode).abs(),
+      'Nouveau rendez-vous !',
+      '$clientName a réservé $serviceName pour le ${_fmt(dateTime)}',
+      _details(),
     );
   }
 

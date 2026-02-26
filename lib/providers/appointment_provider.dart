@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 
 import '../core/mock/mock_data.dart';
 import '../models/appointment.dart';
@@ -36,7 +37,7 @@ class AppointmentProvider extends ChangeNotifier {
       .toList()
     ..sort((a, b) => b.startTime.compareTo(a.startTime));
 
-  Future<void> loadMyAppointments() async {
+  Future<void> loadMyAppointments({bool isProfessional = false}) async {
     _setLoading(true);
     try {
       if (kMockMode) {
@@ -45,13 +46,43 @@ class AppointmentProvider extends ChangeNotifier {
         _error = null;
         return;
       }
-      _appointments = await _service.getMyAppointments();
+      final loaded = await _service.getMyAppointments();
+      _appointments = loaded;
       _error = null;
+      if (isProfessional && !kIsWeb) {
+        try {
+          await _checkNewBookings(loaded);
+        } catch (_) {}
+      }
     } catch (e) {
       _error = e.toString();
     } finally {
       _setLoading(false);
     }
+  }
+
+  static const _seenKey = 'seen_pro_appts';
+
+  Future<void> _checkNewBookings(List<Appointment> loaded) async {
+    final box = Hive.box('cache');
+    final seenRaw = box.get(_seenKey, defaultValue: <dynamic>[]) as List;
+    final seenIds = seenRaw.map((e) => e.toString()).toSet();
+
+    final newAppts = loaded
+        .where((a) => !seenIds.contains(a.id) && !a.isCancelled && !a.isCompleted)
+        .toList();
+
+    for (final appt in newAppts) {
+      try {
+        await _notifications.showNewBookingReceived(
+          clientName: appt.clientName,
+          dateTime: appt.startTime,
+          serviceName: appt.service.name,
+        );
+      } catch (_) {}
+    }
+
+    await box.put(_seenKey, loaded.map((a) => a.id).toList());
   }
 
   Future<Appointment?> book({

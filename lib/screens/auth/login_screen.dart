@@ -128,17 +128,17 @@ class _LoginScreenState extends State<LoginScreen>
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 48),
+                  SizedBox(height: (size.height * 0.055).clamp(20.0, 52.0)),
 
                   // Logo animé
-                  const BooqlyLogo(size: 90),
-                  const SizedBox(height: 16),
+                  BooqlyLogo(size: (size.height * 0.11).clamp(60.0, 90.0)),
+                  SizedBox(height: (size.height * 0.015).clamp(8.0, 16.0)),
 
                   // Nom de l'app
                   Text(
                     'Booqly',
                     style: GoogleFonts.poppins(
-                      fontSize: 32,
+                      fontSize: size.height < 700 ? 26 : 32,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       letterSpacing: -0.5,
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 48),
+                  SizedBox(height: (size.height * 0.04).clamp(20.0, 48.0)),
 
                   // ── Carte glassmorphism ─────────────────────────────────
                   FadeTransition(
@@ -192,7 +192,8 @@ class _LoginScreenState extends State<LoginScreen>
                                     'Bienvenue ! Connectez-vous pour continuer.',
                                     style: GoogleFonts.poppins(
                                       fontSize: 13,
-                                      color: Colors.white.withValues(alpha: 0.65),
+                                      color:
+                                          Colors.white.withValues(alpha: 0.65),
                                     ),
                                   ),
                                   const SizedBox(height: 28),
@@ -261,7 +262,8 @@ class _LoginScreenState extends State<LoginScreen>
                                         backgroundColor: Colors.white,
                                         foregroundColor: AppColors.primaryDark,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(14),
+                                          borderRadius:
+                                              BorderRadius.circular(14),
                                         ),
                                         elevation: 0,
                                       ),
@@ -293,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: (size.height * 0.02).clamp(12.0, 24.0)),
 
                   // Lien inscription
                   FadeTransition(
@@ -321,7 +323,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: (size.height * 0.03).clamp(16.0, 40.0)),
                 ],
               ),
             ),

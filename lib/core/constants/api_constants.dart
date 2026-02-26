@@ -2,8 +2,16 @@ class ApiConstants {
   ApiConstants._();
 
   static const String appName = 'AppointEase';
-  static const String baseUrl = 'http://10.0.2.2:5000/api'; // Android emulator
-  // static const String baseUrl = 'http://localhost:5000/api'; // Web / iOS simulator
+  // ── Changer selon l'environnement ────────────────────────────────────────────
+  // Émulateur Android   → http://10.0.2.2:5000/api
+  // Simulateur iOS/Web  → http://localhost:5000/api
+  // Téléphone physique  → http://<TON_IP_WIFI>:5000/api  (ex: 192.168.2.32)
+  // Production          → https://api.booqly.com/api
+  // ─────────────────────────────────────────────────────────────────────────────
+  static const String baseUrl = String.fromEnvironment(
+    'API_URL',
+    defaultValue: 'http://192.168.2.32:5000/api',
+  );
 
   // Auth
   static const String register = '/auth/register';

@@ -142,17 +142,17 @@ class _RegisterScreenState extends State<RegisterScreen>
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 32),
+                  SizedBox(height: (size.height * 0.035).clamp(12.0, 32.0)),
 
                   // Logo animé
-                  const BooqlyLogo(size: 72),
-                  const SizedBox(height: 12),
+                  BooqlyLogo(size: (size.height * 0.09).clamp(48.0, 72.0)),
+                  SizedBox(height: (size.height * 0.01).clamp(6.0, 12.0)),
 
                   // Nom de l'app
                   Text(
                     'Booqly',
                     style: GoogleFonts.poppins(
-                      fontSize: 28,
+                      fontSize: size.height < 700 ? 22 : 28,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       letterSpacing: -0.5,
@@ -167,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 28),
+                  SizedBox(height: (size.height * 0.025).clamp(12.0, 28.0)),
 
                   // ── Carte glassmorphism ──────────────────────────────────
                   FadeTransition(
@@ -187,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 width: 1.5,
                               ),
                             ),
-                            padding: const EdgeInsets.all(24),
+                            padding: EdgeInsets.all(size.height < 700 ? 18 : 24),
                             child: Form(
                               key: _formKey,
                               child: Column(
@@ -196,20 +196,20 @@ class _RegisterScreenState extends State<RegisterScreen>
                                   Text(
                                     'Inscription',
                                     style: GoogleFonts.poppins(
-                                      fontSize: 22,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 2),
                                   Text(
                                     'Rejoignez Booqly en quelques secondes.',
                                     style: GoogleFonts.poppins(
-                                      fontSize: 13,
+                                      fontSize: 12,
                                       color: Colors.white.withValues(alpha: 0.65),
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 14),
 
                                   // ── Sélecteur de rôle ────────────────────
                                   _RoleSelector(
@@ -217,7 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     onChanged: (v) =>
                                         setState(() => _role = v),
                                   ),
-                                  const SizedBox(height: 20),
+                                  const SizedBox(height: 14),
 
                                   // Prénom + Nom
                                   Row(
@@ -232,7 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                                   label: 'Prénom'),
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
+                                      const SizedBox(width: 10),
                                       Expanded(
                                         child: GlassField(
                                           controller: _lastNameCtrl,
@@ -245,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 14),
+                                  const SizedBox(height: 12),
 
                                   // Email
                                   GlassField(
@@ -255,7 +255,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     keyboardType: TextInputType.emailAddress,
                                     validator: AppValidators.email,
                                   ),
-                                  const SizedBox(height: 14),
+                                  const SizedBox(height: 12),
 
                                   // Téléphone
                                   GlassField(
@@ -265,7 +265,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     keyboardType: TextInputType.phone,
                                     validator: AppValidators.phone,
                                   ),
-                                  const SizedBox(height: 14),
+                                  const SizedBox(height: 12),
 
                                   // Mot de passe
                                   GlassField(
@@ -286,7 +286,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                           () => _obscure = !_obscure),
                                     ),
                                   ),
-                                  const SizedBox(height: 14),
+                                  const SizedBox(height: 12),
 
                                   // Confirmer mot de passe
                                   GlassField(
@@ -310,7 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                     ),
                                   ),
 
-                                  const SizedBox(height: 28),
+                                  const SizedBox(height: 20),
 
                                   // Bouton inscription
                                   SizedBox(
@@ -354,7 +354,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
 
                   // Lien connexion
                   FadeTransition(
@@ -382,7 +382,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
