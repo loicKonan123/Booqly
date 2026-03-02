@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/date_utils.dart';
+import '../../models/appointment.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
@@ -24,6 +26,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         context.read<AppointmentProvider>().loadMyAppointments(isProfessional: isPro);
       }
     });
+  }
+
+  void _showQuickActions(BuildContext ctx, Appointment appointment) {
+    ctx.push('/appointments/${appointment.id}');
   }
 
   @override
@@ -58,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )
             else ...[
               // À venir
-              _SliverSectionTitle(title: 'À venir'),
+              const _SliverSectionTitle(title: 'À venir'),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: upcoming.isEmpty
@@ -68,6 +74,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           (ctx, i) => _AppointmentCard(
                             appointment: upcoming[i],
                             isToday: false,
+                            onTap: () => _showQuickActions(ctx, upcoming[i]),
                           ),
                           childCount: upcoming.length,
                         ),
@@ -150,7 +157,7 @@ class _DashboardHeader extends StatelessWidget {
                   Container(
                     width: 46,
                     height: 46,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       gradient: AppColors.brandGradient,
                       shape: BoxShape.circle,
                     ),
@@ -307,9 +314,10 @@ class _SliverSectionTitle extends StatelessWidget {
 // ── Appointment card ──────────────────────────────────────────────────────────
 
 class _AppointmentCard extends StatelessWidget {
-  final dynamic appointment;
+  final Appointment appointment;
   final bool isToday;
-  const _AppointmentCard({required this.appointment, required this.isToday});
+  final VoidCallback? onTap;
+  const _AppointmentCard({required this.appointment, required this.isToday, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -319,7 +327,12 @@ class _AppointmentCard extends StatelessWidget {
     final initial =
         a.clientName.isNotEmpty ? a.clientName[0].toUpperCase() : '?';
 
-    return Container(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : AppColors.surface,
@@ -422,6 +435,8 @@ class _AppointmentCard extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
         ),
       ),
     );

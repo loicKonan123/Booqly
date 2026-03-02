@@ -5,7 +5,7 @@
 ---
 
 
-Email	devalinloic@gmail.com
+Email	deva
 Mot de passe	Booqly2026
 Rôle	professional (accès dashboard, agenda, services, disponibilités)
 ID	8ae7b334-faf3-4841-b1a8-da26b00b9a33

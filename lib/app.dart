@@ -317,11 +317,14 @@ class _SplashScreenState extends State<_SplashScreen>
 
             // ── Contenu centré ──────────────────────────────────────────
             SafeArea(
-              child: AnimatedBuilder(
+              child: SizedBox(
+                width: double.infinity,
+                child: AnimatedBuilder(
                 animation: _ctrl,
                 builder: (context, _) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Spacer(flex: 2),
 
@@ -343,6 +346,7 @@ class _SplashScreenState extends State<_SplashScreen>
                           offset: Offset(0, _textSlide.value.dy * 40),
                           child: Text(
                             'Booqly',
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontSize: 42,
                               fontWeight: FontWeight.w700,
@@ -360,6 +364,7 @@ class _SplashScreenState extends State<_SplashScreen>
                         opacity: _taglineFade.value.clamp(0.0, 1.0),
                         child: Text(
                           'Vos rendez-vous, simplifiés',
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w400,
@@ -388,6 +393,7 @@ class _SplashScreenState extends State<_SplashScreen>
                     ],
                   );
                 },
+              ),
               ),
             ),
           ],
