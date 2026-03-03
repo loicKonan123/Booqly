@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 
 import '../core/constants/api_constants.dart';
 import '../core/mock/mock_data.dart';
+import '../core/utils/error_utils.dart';
 import '../models/user.dart';
 import '../services/auth_service.dart';
 
@@ -47,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     } finally {
@@ -78,7 +79,7 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     } finally {
@@ -93,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
       _error = null;
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     } finally {

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../core/utils/error_utils.dart';
 import '../services/user_service.dart';
 import 'auth_provider.dart';
 
@@ -29,7 +30,7 @@ class ProfileProvider extends ChangeNotifier {
       _error = null;
       return true;
     } catch (e) {
-      _error = _parseError(e);
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     } finally {
@@ -50,7 +51,7 @@ class ProfileProvider extends ChangeNotifier {
       _error = null;
       return true;
     } catch (e) {
-      _error = _parseError(e);
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     } finally {
@@ -68,11 +69,4 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _parseError(Object e) {
-    final msg = e.toString();
-    if (msg.contains('Exception:')) {
-      return msg.split('Exception:').last.trim();
-    }
-    return msg;
-  }
 }

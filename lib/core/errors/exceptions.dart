@@ -4,7 +4,7 @@ class ServerException implements Exception {
   const ServerException({required this.message, this.statusCode});
 
   @override
-  String toString() => 'ServerException($statusCode): $message';
+  String toString() => message;
 }
 
 class UnauthorizedException implements Exception {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import '../core/mock/mock_data.dart';
+import '../core/utils/error_utils.dart';
 import '../models/appointment.dart';
 import '../services/appointment_service.dart';
 import '../services/notification_service.dart';
@@ -55,7 +56,7 @@ class AppointmentProvider extends ChangeNotifier {
         } catch (_) {}
       }
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
     } finally {
       _setLoading(false);
     }
@@ -153,7 +154,7 @@ class AppointmentProvider extends ChangeNotifier {
       notifyListeners();
       return appointment;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return null;
     } finally {
@@ -173,7 +174,7 @@ class AppointmentProvider extends ChangeNotifier {
       await _notifications.showAppointmentCancelled(updated.service.name);
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     }
@@ -189,7 +190,7 @@ class AppointmentProvider extends ChangeNotifier {
       _replace(updated);
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     }
@@ -205,7 +206,7 @@ class AppointmentProvider extends ChangeNotifier {
       _replace(updated);
       return true;
     } catch (e) {
-      _error = e.toString();
+      _error = AppErrors.friendly(e);
       notifyListeners();
       return false;
     }
