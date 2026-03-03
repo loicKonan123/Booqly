@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/error_utils.dart';
+import '../../core/utils/snack_utils.dart';
 import '../../providers/auth_provider.dart';
 import '../../services/professional_service.dart';
 import '../../theme/app_colors.dart';
@@ -45,17 +47,9 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
               })
           .toList();
       await _service.setAvailabilities(proId, body);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Disponibilités enregistrées')),
-        );
-      }
+      if (mounted) context.showSuccess('Disponibilités enregistrées');
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : $e')),
-        );
-      }
+      if (mounted) context.showError(AppErrors.friendly(e));
     } finally {
       if (mounted) setState(() => _saving = false);
     }

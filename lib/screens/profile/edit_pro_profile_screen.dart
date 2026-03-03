@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/snack_utils.dart';
 import '../../models/professional.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/professional_provider.dart';
@@ -63,9 +64,7 @@ class _EditProProfileScreenState extends State<EditProProfileScreen> {
 
   Future<void> _save() async {
     if (_selectedCategory == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Veuillez sélectionner une catégorie')),
-      );
+      context.showError('Veuillez sélectionner une catégorie');
       return;
     }
     final proId = context.read<AuthProvider>().user?.professionalId;
@@ -81,16 +80,11 @@ class _EditProProfileScreenState extends State<EditProProfileScreen> {
     setState(() => _saving = false);
 
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profil professionnel mis à jour')),
-      );
+      context.showSuccess('Profil professionnel mis à jour');
       Navigator.pop(context);
     } else {
-      final err =
-          context.read<ProfessionalProvider>().error ?? 'Erreur inconnue';
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err), backgroundColor: AppColors.error),
-      );
+      context.showError(
+          context.read<ProfessionalProvider>().error ?? 'Erreur inconnue');
     }
   }
 

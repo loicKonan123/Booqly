@@ -1,5 +1,6 @@
 using Booqly.Application.Common.DTOs;
 using Booqly.Application.Common.Interfaces;
+using Booqly.Domain.Constants;
 using Booqly.Domain.Entities;
 using Booqly.Domain.Enums;
 using MediatR;
@@ -43,6 +44,6 @@ public class LoginCommandHandler(
 
     private static UserDto ToDto(User u, string? professionalId) =>
         new(u.Id.ToString(), u.Email, u.FirstName, u.LastName, u.Phone,
-            u.Role == UserRole.Professional ? "professional" : "client",
+            u.Role == UserRole.Professional ? Roles.Professional : Roles.Client,
             professionalId);
 }

@@ -46,7 +46,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          _SectionHeader(title: 'Rendez-vous'),
+          const _SectionHeader(title: 'Rendez-vous'),
           Card(
             child: Column(
               children: [
@@ -86,7 +86,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          _SectionHeader(title: 'Général'),
+          const _SectionHeader(title: 'Général'),
           Card(
             child: _NotifTile(
               icon: Icons.campaign_outlined,

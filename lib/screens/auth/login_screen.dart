@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/snack_utils.dart';
 import '../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
@@ -68,12 +69,7 @@ class _LoginScreenState extends State<LoginScreen>
     if (ok) {
       context.go(auth.isProfessional ? '/dashboard' : '/home');
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(auth.error ?? 'Erreur de connexion'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      context.showError(auth.error ?? 'Erreur de connexion');
     }
   }
 
@@ -269,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       ),
                                       onPressed: loading ? null : _submit,
                                       child: loading
-                                          ? SizedBox(
+                                          ? const SizedBox(
                                               height: 20,
                                               width: 20,
                                               child: CircularProgressIndicator(

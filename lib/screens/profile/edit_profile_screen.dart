@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/snack_utils.dart';
 import '../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/profile_provider.dart';
@@ -48,20 +49,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
     if (!mounted) return;
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Profil mis à jour'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      context.showSuccess('Profil mis à jour');
       Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(profile.error ?? 'Erreur lors de la mise à jour'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      context.showError(profile.error ?? 'Erreur lors de la mise à jour');
     }
   }
 

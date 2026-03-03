@@ -173,8 +173,8 @@ class _StatusSection extends StatelessWidget {
           children: [
             Icon(Icons.circle, size: 10, color: color),
             const SizedBox(width: 10),
-            Text('Statut',
-                style: const TextStyle(color: AppColors.textSecondary)),
+            const Text('Statut',
+                style: TextStyle(color: AppColors.textSecondary)),
             const Spacer(),
             Container(
               padding:

@@ -1,6 +1,7 @@
 using Booqly.Application.Appointments.Commands.CreateAppointment;
 using Booqly.Application.Common.DTOs;
 using Booqly.Application.Common.Interfaces;
+using Booqly.Domain.Constants;
 using Booqly.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,10 @@ public class UpdateAppointmentStatusCommandHandler(IAppDbContext db, ISmsService
             ?? throw new KeyNotFoundException("Rendez-vous introuvable.");
 
         // Authorization: client can only cancel their own, pro can confirm/complete/cancel theirs
-        if (req.Role == "client" && appointment.ClientId != req.UserId)
+        if (req.Role == Roles.Client && appointment.ClientId != req.UserId)
             throw new UnauthorizedAccessException();
 
-        if (req.Role == "professional" && appointment.Professional.UserId != req.UserId)
+        if (req.Role == Roles.Professional && appointment.Professional.UserId != req.UserId)
             throw new UnauthorizedAccessException();
 
         if (!Enum.TryParse<AppointmentStatus>(req.Status, true, out var newStatus))

@@ -13,13 +13,13 @@ class HelpScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           // Contact card
-          Card(
+          const Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Icon(Icons.headset_mic_outlined, color: AppColors.primary),
                       SizedBox(width: 10),
@@ -30,18 +30,18 @@ class HelpScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  const Text(
+                  SizedBox(height: 12),
+                  Text(
                     'Notre équipe est disponible du lundi au vendredi, 9h – 18h.',
                     style: TextStyle(
                         color: AppColors.textSecondary, fontSize: 13),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   _ContactRow(
                     icon: Icons.email_outlined,
                     label: 'support@booqly.fr',
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   _ContactRow(
                     icon: Icons.phone_outlined,
                     label: '+33 1 00 00 00 00',

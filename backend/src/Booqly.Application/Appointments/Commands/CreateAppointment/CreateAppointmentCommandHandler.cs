@@ -36,14 +36,11 @@ public class CreateAppointmentCommandHandler(IAppDbContext db, ISmsService sms)
         await db.Appointments.AddAsync(appointment, ct);
         await db.SaveChangesAsync(ct);
 
-        // Reload with navigation props
-        await db.Appointments.Entry(appointment)
-            .Reference(a => a.Professional).LoadAsync(ct);
-        await db.Appointments.Entry(appointment)
-            .Reference(a => a.Professional).Query()
-            .Include(p => p.User).LoadAsync(ct);
-        await db.Appointments.Entry(appointment)
-            .Reference(a => a.Service).LoadAsync(ct);
+        // Reload navigation props in one query
+        var saved = await db.Appointments
+            .Include(a => a.Professional).ThenInclude(p => p.User)
+            .Include(a => a.Service)
+            .FirstAsync(a => a.Id == appointment.Id, ct);
 
         // SMS confirmation
         if (!string.IsNullOrWhiteSpace(client.Phone))
@@ -52,7 +49,7 @@ public class CreateAppointmentCommandHandler(IAppDbContext db, ISmsService sms)
             await sms.SendAsync(client.Phone, msg, ct);
         }
 
-        return ToDto(appointment, client, service);
+        return ToDto(saved, client, service);
     }
 
     internal static AppointmentDto ToDto(

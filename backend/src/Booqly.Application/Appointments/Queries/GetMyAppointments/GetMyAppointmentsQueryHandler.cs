@@ -1,6 +1,7 @@
 using Booqly.Application.Appointments.Commands.CreateAppointment;
 using Booqly.Application.Common.DTOs;
 using Booqly.Application.Common.Interfaces;
+using Booqly.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,7 @@ public class GetMyAppointmentsQueryHandler(IAppDbContext db)
             .Include(a => a.Service)
             .AsQueryable();
 
-        query = req.Role == "professional"
+        query = req.Role == Roles.Professional
             ? query.Where(a => a.Professional.UserId == req.UserId)
             : query.Where(a => a.ClientId == req.UserId);
 

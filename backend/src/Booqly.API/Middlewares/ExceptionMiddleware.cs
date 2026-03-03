@@ -32,7 +32,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         ctx.Response.ContentType = "application/json";
         ctx.Response.StatusCode = (int)status;
 
-        var body = JsonSerializer.Serialize(new { error = message });
+        var body = JsonSerializer.Serialize(new { message });
         return ctx.Response.WriteAsync(body);
     }
 }

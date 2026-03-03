@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/snack_utils.dart';
 import '../../core/utils/validators.dart';
 import '../../providers/auth_provider.dart';
 import '../../theme/app_colors.dart';
@@ -64,13 +65,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
     if (ok) {
       setState(() => _sent = true);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              context.read<AuthProvider>().error ?? 'Erreur, réessayez.'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      context.showError(
+          context.read<AuthProvider>().error ?? 'Erreur, réessayez.');
     }
   }
 
@@ -280,7 +276,7 @@ class _FormContent extends StatelessWidget {
               ),
               onPressed: loading ? null : onSubmit,
               child: loading
-                  ? SizedBox(
+                  ? const SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(

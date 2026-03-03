@@ -267,7 +267,7 @@ class _AppointmentCard extends StatelessWidget {
                     const SizedBox(height: 6),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.calendar_today_outlined,
                           size: 12,
                           color: AppColors.textSecondary,

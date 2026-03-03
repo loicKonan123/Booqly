@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/utils/snack_utils.dart';
 import '../../core/utils/validators.dart';
 import '../../providers/profile_provider.dart';
 import '../../theme/app_colors.dart';
@@ -38,20 +39,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
     if (!mounted) return;
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Mot de passe modifié avec succès'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      context.showSuccess('Mot de passe modifié avec succès');
       Navigator.pop(context);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(profile.error ?? 'Erreur lors du changement'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      context.showError(profile.error ?? 'Erreur lors du changement');
     }
   }
 

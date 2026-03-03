@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/date_utils.dart';
+import '../../core/utils/snack_utils.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/professional_provider.dart';
 import '../../theme/app_colors.dart';
@@ -36,20 +37,11 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
     if (!mounted) return;
     setState(() => _loading = false);
     if (appointment != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Rendez-vous confirmé !'),
-          backgroundColor: AppColors.success,
-        ),
-      );
+      context.showSuccess('Rendez-vous confirmé !');
       context.go('/home');
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erreur lors de la réservation'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      context.showError(
+          context.read<AppointmentProvider>().error ?? 'Erreur lors de la réservation');
     }
   }
 
